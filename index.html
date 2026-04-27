@@ -5,386 +5,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengumuman Kelulusan - SMK IPTEK TANGSEL</title>
     
-    <!-- Google Fonts: Poppins & Inter -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- PapaParse -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    
-    <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 
-                        poppins: ['Poppins', 'sans-serif'],
-                        inter: ['Inter', 'sans-serif']
-                    },
-                    colors: {
-                        primary: '#1e3a8a',
-                        secondary: '#3b82f6',
-                        success: '#059669',
-                        danger: '#dc2626'
-                    }
+                    fontFamily: { poppins: ['Poppins', 'sans-serif'], inter: ['Inter', 'sans-serif'] },
+                    colors: { primary: '#1e3a8a', secondary: '#3b82f6', success: '#059669', danger: '#dc2626' }
                 }
             }
         }
     </script>
 
     <style>
-        :root {
-            --bg-image: url('https://res.cloudinary.com/djfe10hfh/image/upload/v1776064062/ub29y81lmgsqwgvbah9o.jpg');
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            filter: blur(8px) brightness(0.4);
-            z-index: -1;
-            transform: scale(1.1);
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .loader {
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid #ffffff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
+        :root { --bg-image: url('https://res.cloudinary.com/djfe10hfh/image/upload/v1776064062/ub29y81lmgsqwgvbah9o.jpg'); }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow-x: hidden; }
+        body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: var(--bg-image); background-size: cover; background-position: center; filter: blur(8px) brightness(0.4); z-index: -1; transform: scale(1.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .loader { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #ffffff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        /* --- OPTIMASI PRINT 1 HALAMAN --- */
-        @media print {
-            @page { 
-                size: A4 portrait; 
-                margin: 10mm; 
-            }
-            
-            html, body {
-                background: white !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                height: auto !important;
-                overflow: visible !important;
-            }
-
-            .no-print { display: none !important; }
-            body::before { display: none !important; }
-            
-            main {
-                max-width: 100% !important;
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                display: block !important;
-            }
-
-            #result-section {
-                display: flex !important;
-                visibility: visible !important;
-                box-shadow: none !important; 
-                border: none !important;
-                background: white !important;
-                width: 100% !important;
-                height: auto !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border-radius: 0 !important;
-                backdrop-filter: none !important;
-                position: relative !important;
-                flex-direction: column !important;
-            }
-
-            #status-banner {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                border-radius: 0 !important;
-                padding: 6px 0 !important;
-                font-size: 14pt !important;
-                margin-bottom: 10px !important;
-            }
-
-            #res-message {
-                background-color: transparent !important;
-                border: 1px solid #eee !important;
-                font-size: 10pt !important;
-                padding: 12px !important;
-                margin: 10px 0 !important;
-                line-height: 1.4 !important;
-            }
-
-            #res-photo-print {
-                display: block !important;
-                width: 90px !important; /* Perkecil foto untuk hemat ruang */
-                height: 90px !important;
-                margin: 0 auto 8px auto !important;
-            }
-
-            #res-name {
-                font-size: 16pt !important;
-                margin-top: 5px !important;
-            }
-
-            .print-footer {
-                margin-top: 20px !important;
-                display: block !important;
-                page-break-inside: avoid;
-            }
-
-            .my-6 { margin-top: 8px !important; margin-bottom: 8px !important; }
-        }
+        @media print { .no-print { display: none !important; } body::before { display: none !important; } .glass-card { background: white !important; backdrop-filter: none !important; border: none !important; box-shadow: none !important; } }
     </style>
 </head>
 <body class="p-4">
 
-    <!-- Header Logo -->
     <header class="mb-10 text-center fade-in no-print">
-        <div class="w-28 h-28 mx-auto bg-white/90 backdrop-blur rounded-3xl p-3 shadow-2xl mb-6 flex items-center justify-center overflow-hidden border border-white/50">
-            <img id="school-logo" src="https://iptek.sch.id/wp-content/uploads/2025/07/logo-terbaru-iptek.png" alt="Logo Sekolah" class="w-full h-full object-contain">
+        <div class="w-24 h-24 mx-auto bg-white rounded-2xl p-2 shadow-xl mb-4 flex items-center justify-center overflow-hidden">
+            <img src="https://iptek.sch.id/wp-content/uploads/2025/07/logo-terbaru-iptek.png" alt="Logo" class="w-full h-full object-contain">
         </div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight uppercase drop-shadow-lg">SMK IPTEK TANGSEL</h1>
-        <div class="h-1 w-20 bg-secondary mx-auto my-3 rounded-full"></div>
-        <p class="text-blue-100 font-medium tracking-wide">Digital Graduation Portal</p>
+        <h1 class="text-2xl font-black text-white uppercase tracking-tight">SMK IPTEK TANGSEL</h1>
+        <p class="text-blue-100 text-sm opacity-80">Sistem Kelulusan Digital (SIKENTAL) IPTEK</p>
     </header>
 
     <main class="w-full max-w-lg relative">
-        
-        <!-- COUNTDOWN SECTION -->
-        <section id="countdown-section" class="glass-card rounded-[2rem] p-10 text-center fade-in">
-            <h2 class="text-sm font-bold text-gray-500 mb-8 uppercase tracking-[0.2em]">Pengumuman Dibuka Dalam</h2>
-            <div class="flex justify-center gap-4">
-                <div class="flex flex-col items-center">
-                    <span id="days" class="text-4xl font-black text-primary">00</span>
-                    <span class="text-[10px] text-gray-400 font-bold uppercase mt-1">Hari</span>
-                </div>
-                <div class="text-4xl font-light text-gray-300">:</div>
-                <div class="flex flex-col items-center">
-                    <span id="hours" class="text-4xl font-black text-primary">00</span>
-                    <span class="text-[10px] text-gray-400 font-bold uppercase mt-1">Jam</span>
-                </div>
-                <div class="text-4xl font-light text-gray-300">:</div>
-                <div class="flex flex-col items-center">
-                    <span id="minutes" class="text-4xl font-black text-primary">00</span>
-                    <span class="text-[10px] text-gray-400 font-bold uppercase mt-1">Menit</span>
-                </div>
-                <div class="text-4xl font-light text-gray-300">:</div>
-                <div class="flex flex-col items-center">
-                    <span id="seconds" class="text-4xl font-black text-primary">00</span>
-                    <span class="text-[10px] text-gray-400 font-bold uppercase mt-1">Detik</span>
-                </div>
+        <!-- COUNTDOWN -->
+        <section id="countdown-section" class="glass-card rounded-3xl p-8 text-center fade-in">
+            <h2 class="text-xs font-bold text-gray-400 mb-6 uppercase tracking-widest">Pengumuman Dibuka Dalam</h2>
+            <div id="timer" class="flex justify-center gap-4 text-primary font-black text-3xl">
+                <div class="flex flex-col"><span id="days">00</span><small class="text-[10px] text-gray-400 uppercase">Hari</small></div>
+                <div>:</div>
+                <div class="flex flex-col"><span id="hours">00</span><small class="text-[10px] text-gray-400 uppercase">Jam</small></div>
+                <div>:</div>
+                <div class="flex flex-col"><span id="minutes">00</span><small class="text-[10px] text-gray-400 uppercase">Menit</small></div>
+                <div>:</div>
+                <div class="flex flex-col"><span id="seconds">00</span><small class="text-[10px] text-gray-400 uppercase">Detik</small></div>
             </div>
         </section>
 
-        <!-- LOGIN SECTION -->
-        <section id="login-section" class="glass-card rounded-[2.5rem] p-10 hidden fade-in">
-            <div class="text-center mb-10">
-                <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Verifikasi Identitas</h2>
-                <p class="text-sm text-gray-500 mt-2">Silakan lengkapi kredensial di bawah ini</p>
-            </div>
-            <form id="login-form" class="space-y-6">
-                <div class="space-y-2">
-                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Nomor Induk Siswa Nasional</label>
-                    <input type="text" id="nisn" placeholder="Masukkan NISN Anda" required class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-secondary/20 focus:border-secondary outline-none transition-all duration-300 font-medium">
+        <!-- LOGIN -->
+        <section id="login-section" class="glass-card rounded-[2rem] p-8 hidden fade-in">
+            <form id="login-form" class="space-y-4">
+                <div class="text-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">Cek Status Anda</h2>
                 </div>
-                <div class="space-y-2">
-                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Access Token</label>
-                    <input type="password" id="token" placeholder="Masukkan Token Validasi" required class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-secondary/20 focus:border-secondary outline-none transition-all duration-300 font-medium">
-                </div>
-                <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-2xl hover:bg-blue-900 active:scale-95 transition-all duration-300 shadow-xl shadow-blue-900/20 mt-4 tracking-widest text-sm">PERIKSA STATUS</button>
+                <input type="text" id="nisn" placeholder="Masukkan NISN" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary outline-none transition-all">
+                <input type="password" id="token" placeholder="Masukkan Token" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary outline-none transition-all">
+                <button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-blue-900 transition-all shadow-lg">MASUK</button>
             </form>
         </section>
 
-        <!-- RESULT SECTION -->
-        <section id="result-section" class="glass-card rounded-[2.5rem] overflow-hidden hidden fade-in">
-            <!-- Kop Sekolah -->
-            <div class="hidden print:flex items-center justify-between gap-4 mb-4 border-b-2 border-black pb-2">
-                <img src="https://iptek.sch.id/wp-content/uploads/2025/07/logo-terbaru-iptek.png" class="w-16 h-16 object-contain">
-                <div class="text-right flex-1">
-                    <h1 class="text-lg font-bold uppercase leading-tight">SMK IPTEK TANGSEL</h1>
-                    <p class="text-[8px] font-medium leading-tight">Jl. Lingkar Selatan, Kp. Sengkol Kel. Muncul Kec. Setu, Tangerang Selatan<br>Banten - Indonesia | www.iptek.sch.id</p>
-                </div>
-            </div>
-
-            <div id="status-banner" class="py-4 text-center text-white font-black text-lg uppercase tracking-[0.3em]">
-                STATUS KELULUSAN
-            </div>
-            
-            <div class="p-6 print:p-0 text-center flex-1 flex flex-col items-center">
-                <!-- Foto versi layar -->
-                <div class="relative inline-block mb-4 group no-print">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-secondary to-blue-900 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                    <img id="res-photo" src="" alt="Foto" class="relative w-28 h-28 rounded-full border-4 border-white shadow-2xl mx-auto object-cover bg-gray-100">
-                </div>
-                
-                <!-- Foto versi print -->
-                <img id="res-photo-print" src="" alt="Foto" class="hidden w-24 h-24 rounded-lg border border-gray-200 mb-2 object-cover">
-                
-                <h3 id="res-name" class="text-xl font-bold text-gray-800 uppercase tracking-tight">Nama Siswa</h3>
-                
-                <div class="flex flex-wrap justify-center gap-2 mt-1">
-                    <span id="res-nisn" class="text-[10px] font-bold text-gray-400 px-2 py-0.5 bg-gray-100/50 rounded border border-gray-100">NISN: 00000000</span>
-                    <span id="res-class" class="text-[10px] font-bold text-secondary px-2 py-0.5 bg-blue-50/50 rounded border border-blue-100 uppercase">KELAS: -</span>
-                </div>
-                
-                <div class="my-4 h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent print:bg-gray-200"></div>
-                
-                <div id="res-message" class="p-4 rounded-xl text-sm leading-relaxed font-medium text-justify"></div>
-
-                <!-- Bagian Tanda Tangan Sederhana -->
-                <div class="hidden print:block print-footer w-full">
-                    <div class="flex justify-end mt-4">
-                        <div class="text-right">
-                            <p class="text-[9pt] mb-1">Tangerang Selatan, 13 April 2026</p>
-                            <p class="text-[9pt] font-bold uppercase">Kepala Sekolah,</p>
-                            <div class="h-14"></div>
-                            <p class="text-[9pt] font-bold underline uppercase">Arief Rahman Hakim, SE</p>
-                            <p class="text-[8px] text-gray-400 font-mono mt-1">Digital ID: IPTEK-GRAD-2026-VERIFIED</p>
-                        </div>
+        <!-- RESULT -->
+        <section id="result-section" class="glass-card rounded-[2rem] overflow-hidden hidden fade-in">
+            <div id="status-banner" class="py-3 text-center text-white font-black text-sm uppercase tracking-widest">STATUS KELULUSAN</div>
+            <div class="p-6 text-center">
+                <div class="relative inline-block mb-4 no-print">
+                    <img id="res-photo" src="" alt="Foto Siswa" 
+                         onerror="handleImageError(this)" 
+                         class="w-28 h-28 rounded-full border-4 border-white shadow-xl mx-auto object-cover bg-gray-100">
+                    <div id="photo-loading" class="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-full">
+                        <div class="w-6 h-6 border-2 border-primary border-t-transparent animate-spin rounded-full"></div>
                     </div>
                 </div>
+                
+                <h3 id="res-name" class="text-xl font-bold text-gray-800 uppercase">Nama Siswa</h3>
+                <p id="res-detail" class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-tighter">NISN: - | KELAS: -</p>
+                
+                <div class="my-4 h-px bg-gray-200"></div>
+                <div id="res-message" class="text-sm p-4 rounded-xl text-justify font-medium"></div>
 
-                <div class="mt-6 flex gap-3 no-print w-full">
-                    <button onclick="window.print()" class="flex-1 bg-gray-900 text-white py-4 rounded-2xl text-xs font-bold hover:bg-black transition-all shadow-lg active:scale-95 uppercase tracking-widest">CETAK (A4)</button>
-                    <button onclick="location.reload()" class="flex-1 bg-white text-gray-500 py-4 rounded-2xl text-xs font-bold border border-gray-200 hover:bg-gray-50 transition-all active:scale-95 uppercase tracking-widest">KEMBALI</button>
+                <div class="mt-6 flex gap-2 no-print">
+                    <button onclick="window.print()" class="flex-1 bg-gray-800 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest">Cetak</button>
+                    <button onclick="location.reload()" class="flex-1 bg-white text-gray-400 py-3 rounded-xl text-xs font-bold border border-gray-200 uppercase tracking-widest">Kembali</button>
                 </div>
+                
+                <!-- Tombol rahasia jika foto gagal -->
+                <button id="btn-fix-photo" onclick="tryAlternativePhoto()" class="mt-4 text-[10px] text-blue-500 underline hidden no-print">Foto tidak muncul? Laporkan di sini</button>
             </div>
         </section>
 
-        <!-- LOADER -->
-        <div id="loader" class="hidden flex flex-col items-center py-16">
+        <div id="loader" class="hidden flex flex-col items-center py-12">
             <div class="loader mb-4"></div>
-            <p class="text-white text-xs font-bold uppercase tracking-widest opacity-80 animate-pulse">Otentikasi Server...</p>
+            <p class="text-white text-xs font-bold animate-pulse">Menghubungkan...</p>
         </div>
-
     </main>
 
-    <footer class="mt-12 text-blue-200 text-[10px] no-print text-center leading-loose font-medium max-w-xs">
-        <div class="opacity-50 mb-2">Sistem Informasi Kelulusan Digital (SIKENTAL) IPTEK SCHOOL</div>
-        &copy; 2026 DEPARTEMEN HUMAS IPTEK SCHOOL
+    <footer class="mt-10 text-white/40 text-[10px] text-center">
+        &copy; 2026 Departemen Humas IPTEK School
     </footer>
 
     <script>
         const releaseDate = new Date("2026-04-04T16:05:10").getTime();
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeeXK-9ELavu_q0TCwD86__04ecIOQ6nmCd8UShvQis1_O4oe23B_2Nq8Y6bff8qetN_n_YCgpIofq/pub?gid=0&single=true&output=csv";
-
-        const sections = {
-            countdown: document.getElementById('countdown-section'),
-            login: document.getElementById('login-section'),
-            result: document.getElementById('result-section'),
-            loader: document.getElementById('loader')
-        };
+        let currentStudent = null;
 
         const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = releaseDate - now;
+            const distance = releaseDate - new Date().getTime();
             if (distance < 0) {
                 clearInterval(timer);
-                sections.countdown.classList.add('hidden');
-                sections.login.classList.remove('hidden');
+                document.getElementById('countdown-section').classList.add('hidden');
+                document.getElementById('login-section').classList.remove('hidden');
                 return;
             }
-            document.getElementById('days').innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
-            document.getElementById('hours').innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-            document.getElementById('minutes').innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-            document.getElementById('seconds').innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+            document.getElementById('days').innerText = String(Math.floor(distance / 86400000)).padStart(2, '0');
+            document.getElementById('hours').innerText = String(Math.floor((distance % 86400000) / 3600000)).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(Math.floor((distance % 3600000) / 60000)).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(Math.floor((distance % 60000) / 1000)).padStart(2, '0');
         }, 1000);
+
+        function getFileId(url) {
+            const match = url.match(/\/d\/([^\/]+)|id=([^\&]+)/);
+            return match ? (match[1] || match[2]) : null;
+        }
+
+        function handleImageError(img) {
+            const loader = document.getElementById('photo-loading');
+            if(loader) loader.style.display = 'none';
+            // Gunakan avatar teks sebagai fallback terakhir
+            const name = document.getElementById('res-name').innerText || 'Siswa';
+            img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1e3a8a&color=fff&size=128`;
+            document.getElementById('btn-fix-photo').classList.remove('hidden');
+        }
+
+        // Jalur alternatif jika link standar diblokir
+        function tryAlternativePhoto() {
+            if (!currentStudent || !currentStudent.foto) return;
+            const id = getFileId(currentStudent.foto);
+            if (id) {
+                // Mencoba jalur render drive yang berbeda
+                const altUrl = `https://lh3.googleusercontent.com/d/${id}`;
+                const img = document.getElementById('res-photo');
+                img.src = altUrl;
+                document.getElementById('btn-fix-photo').classList.add('hidden');
+            }
+        }
 
         document.getElementById('login-form').onsubmit = (e) => {
             e.preventDefault();
-            const inputNisn = document.getElementById('nisn').value.trim();
-            const inputToken = document.getElementById('token').value.trim();
-            sections.login.classList.add('hidden');
-            sections.loader.classList.remove('hidden');
+            const n = document.getElementById('nisn').value.trim();
+            const t = document.getElementById('token').value.trim();
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('loader').classList.remove('hidden');
 
             Papa.parse(sheetUrl, {
-                download: true,
-                header: true,
-                complete: function(results) {
-                    const data = results.data;
-                    const student = data.find(s => 
-                        s.nisn && s.nisn.toString().trim() === inputNisn && 
-                        s.token && s.token.toString().trim() === inputToken
-                    );
+                download: true, header: true,
+                complete: function(res) {
+                    const s = res.data.find(x => x.nisn == n && x.token == t);
                     setTimeout(() => {
-                        sections.loader.classList.add('hidden');
-                        if (student) {
-                            showResult(student);
-                        } else {
-                            alert("NISN atau Token salah!");
-                            sections.login.classList.remove('hidden');
+                        document.getElementById('loader').classList.add('hidden');
+                        if (s) { 
+                            currentStudent = s;
+                            showResult(s); 
+                        } else { 
+                            alert("Kombinasi salah!"); 
+                            document.getElementById('login-section').classList.remove('hidden');
                         }
-                    }, 800);
-                },
-                error: function() {
-                    alert("Gagal memuat data!");
-                    sections.loader.classList.add('hidden');
-                    sections.login.classList.remove('hidden');
+                    }, 500);
                 }
             });
         };
 
         function showResult(s) {
-            sections.result.classList.remove('hidden');
+            document.getElementById('result-section').classList.remove('hidden');
             document.getElementById('res-name').innerText = s.nama;
-            document.getElementById('res-nisn').innerText = "NISN: " + s.nisn;
-            document.getElementById('res-class').innerText = "KELAS: " + (s.kelas || "-");
+            document.getElementById('res-detail').innerText = `NISN: ${s.nisn} | KELAS: ${s.kelas || '-'}`;
             
-            const photoUrl = s.foto || 'https://via.placeholder.com/150?text=FOTO';
-            document.getElementById('res-photo').src = photoUrl;
-            document.getElementById('res-photo-print').src = photoUrl;
+            const fileId = getFileId(s.foto || '');
+            const img = document.getElementById('res-photo');
+            const loader = document.getElementById('photo-loading');
             
-            const banner = document.getElementById('status-banner');
-            const msgBox = document.getElementById('res-message');
-            const isLulus = s.status && s.status.toUpperCase() === "LULUS";
-
-            if (isLulus) {
-                banner.className = "py-4 text-center text-white font-black text-lg uppercase bg-success";
-                banner.innerText = "LULUS";
-                msgBox.className = "p-4 rounded-xl text-sm leading-relaxed bg-emerald-50 text-emerald-900 border border-emerald-100";
-                msgBox.innerHTML = `Selamat! Anda dinyatakan <strong>LULUS</strong> dari SMK IPTEK TANGSEL. Teruslah berkarya dan jaga nama baik sekolah.`;
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            if (fileId) {
+                // Menggunakan URL thumbnail berkualitas tinggi sebagai jalur paling stabil
+                img.src = `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
+                img.onload = () => { if(loader) loader.style.display = 'none'; };
             } else {
-                banner.className = "py-4 text-center text-white font-black text-lg uppercase bg-danger";
+                handleImageError(img);
+            }
+            
+            const isLulus = s.status && s.status.toUpperCase() === "LULUS";
+            const banner = document.getElementById('status-banner');
+            const msg = document.getElementById('res-message');
+            
+            if(isLulus) {
+                banner.className = "py-3 text-center text-white font-black text-sm bg-success";
+                banner.innerText = "LULUS";
+                msg.className = "text-sm p-4 rounded-xl text-justify font-medium bg-emerald-50 text-emerald-900 border border-emerald-100";
+                msg.innerHTML = `Selamat! Anda dinyatakan <b>LULUS</b>. Pertahankan prestasimu di jenjang berikutnya.`;
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            } else {
+                banner.className = "py-3 text-center text-white font-black text-sm bg-danger";
                 banner.innerText = "DITUNDA";
-                msgBox.className = "p-4 rounded-xl text-sm leading-relaxed bg-red-50 text-red-900 border border-red-100";
-                msgBox.innerHTML = `Status Anda <strong>DITUNDA</strong>. Harap segera menghubungi wali kelas untuk informasi lebih lanjut mengenai persyaratan yang belum terpenuhi.`;
+                msg.className = "text-sm p-4 rounded-xl text-justify font-medium bg-red-50 text-red-900 border border-red-100";
+                msg.innerHTML = `Mohon maaf, status kelulusan Anda <b>DITUNDA</b>. Silakan hubungi bagian kesiswaan.`;
             }
         }
     </script>
